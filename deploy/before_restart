@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+oldrev, newrev = ARGV
+
+def run(cmd)
+  exit($?.exitstatus) unless system "umask 002 && #{cmd}"
+end
+
+def god_installed?
+  Gem::Specification.find_by_name('god')
+  true
+rescue Gem::LoadError
+  false
+end
+
+def god_file_symlinked?
+  File.exist?('/etc/god/god.conf')
+end
+
+def god_init_symlinked?
+  File.exist?('/etc/init.d/god')
+end
+
+def god_conf_d_exists?
+  File.exist?('/etc/god/conf.d')
+end
+
+run "sudo gem install god" unless god_installed?
+run "sudo mkdir -p /etc/god/conf.d" unless god_conf_d_exists?
+run "sudo ln -nfs /home/ash/apps/god/config/god.conf /etc/god/god.conf" unless god_file_symlinked?
+
+unless god_init_symlinked?
+  run "sudo ln -nfs /home/ash/apps/god/config/god.init /etc/init.d/god"
+end

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "Stopping and starting god"
+sudo service god stop
+sudo service god start
