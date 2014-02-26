@@ -10,15 +10,29 @@
 ### END INIT INFO
 
 RETVAL=0
+GOD_BINARY="/usr/local/bin/god"
+GOD_CONFIG="/etc/god/god.conf"
+GOD_PID="/var/run/god.pid"
+GOD_LOG="/var/log/god.log"
+
+start() {
+  ${GOD_BINARY} -c ${GOD_CONFIG} -P ${GOD_PID} --log-level debug --log ${GOD_LOG}
+}
+
+stop() {
+  kill `cat ${GOD_PID} 2> /dev/null` > /dev/null 2>&1
+}
+
+status() {
+  ${GOD_BINARY} status
+}
 
 case "$1" in
   start)
-    /usr/local/bin/god -P /var/run/god.pid --log-level debug --log /var/log/god.log
-    /usr/local/bin/god load /etc/god/god.conf
+    start
     RETVAL=$?
     ;;
   stop)
-    kill `cat /var/run/god.pid 2> /dev/null` > /dev/null 2>&1
     RETVAL=$?
     ;;
   restart)
@@ -27,7 +41,7 @@ case "$1" in
     RETVAL=$?
     ;;
   status)
-    /usr/local/bin/god status
+    status
     RETVAL=$?
     ;;
   *)
