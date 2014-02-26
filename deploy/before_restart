@@ -14,21 +14,18 @@ rescue Gem::LoadError
 end
 
 def god_file_symlinked?
-  File.exist?('/etc/god/god.conf')
-end
-
-def god_init_symlinked?
-  File.exist?('/etc/init.d/god')
+  File.symlink?('/etc/god/god.conf')
 end
 
 def god_conf_d_exists?
   File.exist?('/etc/god/conf.d')
 end
 
-run "sudo gem install god" unless god_installed?
+run "sudo gem install god --no-rdoc --no-ri" unless god_installed?
 run "sudo mkdir -p /etc/god/conf.d" unless god_conf_d_exists?
 run "sudo ln -nfs /home/ash/apps/god/config/god.conf /etc/god/god.conf" unless god_file_symlinked?
 
-unless god_init_symlinked?
-  run "sudo ln -nfs /home/ash/apps/god/config/god.init /etc/init.d/god"
-end
+run "sudo cp /home/ash/apps/god/config/god.init /etc/init.d/god"
+run "sudo chmod 755 /etc/init.d/god"
+run "sudo update-rc.d god defaults"
+run "sudo update-rc.d god enable"

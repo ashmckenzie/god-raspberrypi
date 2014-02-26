@@ -1,20 +1,24 @@
-#!/bin/bash
-#
-# God
-#
-# chkconfig: - 85 15
-# description: start, stop, restart, status for God
-#
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:        god
+# Required-Start:  $network $syslog
+# Required-Stop:   $network $syslog
+# Default-Start:   2 3 4 5
+# Default-Stop:
+# Short-Description: Start god
+### END INIT INFO
+
 RETVAL=0
 
 case "$1" in
   start)
     /usr/local/bin/god -P /var/run/god.pid --log-level debug --log /var/log/god.log
-    /usr/local/bin/god load /etc/god.conf
+    /usr/local/bin/god load /etc/god/god.conf
     RETVAL=$?
     ;;
   stop)
-    kill `cat /var/run/god.pid`
+    kill `cat /var/run/god.pid 2> /dev/null` > /dev/null 2>&1
     RETVAL=$?
     ;;
   restart)
@@ -23,7 +27,7 @@ case "$1" in
     RETVAL=$?
     ;;
   status)
-    /usr/local/bin/god  status
+    /usr/local/bin/god status
     RETVAL=$?
     ;;
   *)
