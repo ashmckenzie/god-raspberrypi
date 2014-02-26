@@ -16,7 +16,7 @@ GOD_PID="/var/run/god.pid"
 GOD_LOG="/var/log/god.log"
 
 start() {
-  ${GOD_BINARY} -c ${GOD_CONFIG} -P ${GOD_PID} --log-level debug --log ${GOD_LOG}
+  ${GOD_BINARY} -c ${GOD_CONFIG} -P ${GOD_PID} --log-level info --log ${GOD_LOG}
 }
 
 stop() {
