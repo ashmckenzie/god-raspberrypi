@@ -33,7 +33,7 @@ end
 
 run "sudo gem install specific_install --no-rdoc --no-ri" unless specific_install_installed?
 # run "sudo gem install god --no-rdoc --no-ri" unless god_installed?
-run "sudo gem specific_install https://github.com/ashmckenzie/god.git --no-rdoc --no-ri" unless god_installed?
+run "sudo gem specific_install https://github.com/ashmckenzie/god.git" unless god_installed?
 run "sudo mkdir -p /etc/god/conf.d" unless god_conf_d_exists?
 run "sudo ln -nfs /home/ash/apps/god/config/god.conf /etc/god/god.conf" unless god_file_symlinked?
 
