@@ -6,20 +6,20 @@ def run(cmd)
   exit($?.exitstatus) unless system "umask 002 && #{cmd}"
 end
 
-def god_installed?
-  gem_installed?('god')
-end
+# def god_installed?
+#   gem_installed?('god')
+# end
 
-def specific_install_installed?
-  gem_installed?('specific_install')
-end
+# def specific_install_installed?
+#   gem_installed?('specific_install')
+# end
 
-def gem_installed? gem
-  Gem::Specification.find_by_name(gem)
-  true
-rescue Gem::LoadError
-  false
-end
+# def gem_installed? gem
+#   Gem::Specification.find_by_name(gem)
+#   true
+# rescue Gem::LoadError
+#   false
+# end
 
 def god_file_symlinked?
   File.symlink?('/etc/god/god.conf')
@@ -31,9 +31,10 @@ end
 
 # ------------------------------------------------------------------------------
 
-run "sudo gem install specific_install --no-rdoc --no-ri" unless specific_install_installed?
+# run "sudo gem install specific_install --no-rdoc --no-ri" unless specific_install_installed?
+# run "sudo gem specific_install https://github.com/ashmckenzie/god.git" unless god_installed?
+
 # run "sudo gem install god --no-rdoc --no-ri" unless god_installed?
-run "sudo gem specific_install https://github.com/ashmckenzie/god.git" unless god_installed?
 run "sudo mkdir -p /etc/god/conf.d" unless god_conf_d_exists?
 run "sudo ln -nfs /home/ash/apps/god/config/god.conf /etc/god/god.conf" unless god_file_symlinked?
 
